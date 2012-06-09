@@ -6,7 +6,7 @@ use URI::Escape;
 use Getopt::Long;
 use Data::Dumper;
 use LWP::UserAgent;
-use Bio::Phylo::Util::Logger;
+use Bio::Phylo::Util::Logger ':levels';
 use Bio::Phylo::IO qw'parse unparse';
 use Bio::Phylo::Util::CONSTANT ':objecttypes';
 
@@ -14,9 +14,9 @@ use Bio::Phylo::Util::CONSTANT ':objecttypes';
 my $TNRS_URL = 'http://128.196.142.27:3000/submit';
 
 # process command line arguments
-my $verbosity    = 2;
-my $timeout      = 60;
-my $wait         = 5;
+my $verbosity = DEBUG;
+my $timeout   = 60;
+my $wait      = 5;
 
 # Bio::Phylo::Util::Logger
 my $log;
@@ -26,13 +26,13 @@ my $outfile;
 
 sub run {
 
-	my ( $infile, $outfile );
+	my $infile;
 	GetOptions(
-		'infile=s'       => \$infile,
-		'outfile=s'      => \$outfile,
-		'verbose+'       => \$verbosity,
-		'timeout=i'      => \$timeout,
-		'wait=i'         => \$wait,
+		'infile=s'  => \$infile,
+		'outfile=s' => \$outfile,
+		'verbose+'  => \$verbosity,
+		'timeout=i' => \$timeout,
+		'wait=i'    => \$wait,
 	);
 	
 	# instantiate logger
@@ -47,7 +47,7 @@ sub run {
 		'-file'       => $infile,
 		'-as_project' => 1,
 	);
-	$log->info("parsed taxa data from $infile");
+	$log->info("parsed data from $infile");
 	
 	# get taxa
 	my ($taxa) = @{ $project->get_items(_TAXA_) };
@@ -57,7 +57,7 @@ sub run {
 	my %taxon_for_name = map { $_->get_name => $_ } @{ $taxa->get_entities };
 	
 	# do the request
-	my $result = fetch_url( $TNRS_URL, 'post', 'query' => join '%0A', map { uri_escape $_ } keys %taxon_for_name ); # this is a redirect
+	my $result = fetch_url( $TNRS_URL, 'post', 'query' => join "\n", keys %taxon_for_name ); # this is a redirect
 	my $obj = decode_json($result);
 	
 	# start polling
@@ -84,7 +84,7 @@ sub fetch_url {
 	$ua->timeout($timeout);
 	$log->info("instantiated user agent with timeout $timeout");
 	
-	# do the request
+	# do the request on LWP::UserAgent $ua
 	my $response = $ua->$method($url,\%form);
 	
 	# had a 200 OK
@@ -130,7 +130,7 @@ sub process_result {
 	}
 	print $fh "\n";
 	
-	# print table
+	# print taxon metadata as tab-delimited table
 	$tnrs_taxa->visit(sub {
 		my $taxon = shift;
 		print $fh $taxon->get_name;
