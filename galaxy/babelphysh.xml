@@ -28,7 +28,7 @@
 				<when input="serializer" value="nexml" format="nexml" />
 				<when input="serializer" value="phyloxml" format="phyloxml" />
 				<when input="serializer" value="json" format="json" />
-				<when input="serializer" value="adjacency" format="adjacency" />
+				<when input="serializer" value="adjacency" format="adjacency_list" />
 				<when input="serializer" value="ancestor" format="ancestor" />
 			</change_format>                        
 		</data>
