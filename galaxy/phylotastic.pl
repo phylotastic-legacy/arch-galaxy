@@ -13,17 +13,14 @@ eval { require $package };
 if ( $@ ) {
 	die <<"ERROR";
 ==================================== ERROR =====================================
-FAILED TO RUN $tool
+  FAILED TO LOAD $class
 ================================= EXPLANATION ==================================
-The perl package Bio::PhyloTastic (or one of its dependencies) was not installed
-correctly. This issue should be resolved by re-installing that package from the
-comprehensive perl archive network (cpan.org), which is best done from the
-command line:
-
-	\$ sudo perl -MCPAN -e 'install Bundle::PhyloTastic'
-
+  The perl package $class (or one of its dependencies) couldn't
+  be loaded correctly. This is either because it hasn't been installed
+  system-wide or because the environment variable PERL5LIB does not
+  include the path to the lib folder of the cpan api.
 ================================================================================
-The error that was issued when attempting to run the $tool tool was:
+  The error that was issued when attempting to run the $tool tool was:
 $@
 ================================================================================
 ERROR
