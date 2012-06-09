@@ -1,0 +1,28 @@
+<tool id="taxtractor" name="TaxTractor">
+	<!-- this is a tool config file for galaxy -->
+	<description>Extracts and processes taxon labels from various phylogenetic file formats</description>
+	<command interpreter="perl">phylotastic.pl TaxTractor -i $infile -f $format -s '$search' -r '$replace' -o $output</command>
+	<inputs>
+		<param name="format" type="select" label="Input data type">
+			<option value="nexus">NEXUS</option>
+			<option value="newick">Newick</option>
+			<option value="nexml">NeXML</option>
+			<option value="phyloxml">PhyloXML</option>
+			<option value="fasta">FASTA</option>
+			<option value="phylip">PHYLIP</option>
+			<option value="tolweb">Tree of Life XML</option>
+			<option value="adjacency">Adjacency table</option>
+			<option value="taxlist">Plain text</option>
+		</param>               
+		<param format="newick" name="infile" type="data" label="Input file"/>
+		<param name="search" type="text" label="Search pattern"/>
+		<param name="replace" type="text" label="Replace pattern"/>
+	</inputs>
+	<outputs>
+		<data format="txt" name="output"/>
+	</outputs>
+	<help>
+	This tool extracts and processes taxon labels from various phylogenetic file
+	formats. The search and replace patterns are inserted in a s/$search/$replace/g
+	</help>
+</tool>
