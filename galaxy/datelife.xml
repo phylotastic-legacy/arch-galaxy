@@ -1,0 +1,12 @@
+<tool id="datelifeclient" name="Tree Node Dater">
+	<!-- this is a tool config file for galaxy -->
+	<description>Populates branch lengths using DateLife.org</description>
+	<command interpreter="perl">phylotastic.pl DateLife -i $infile -o $outfile</command>
+	<inputs>                
+		<param format="adjacency_list" name="infile" type="data" label="Input tree"/>
+	</inputs>
+	<outputs>
+		<data format="adjacency_list" name="outfile" />
+	</outputs>
+	<help>Populates branch lengths using DateLife.org</help>
+</tool>
