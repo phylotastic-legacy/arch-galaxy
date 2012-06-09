@@ -1,0 +1,13 @@
+<tool id="pruneomatic" name="Prune-O-Matic">
+	<!-- this is a tool config file for galaxy -->
+	<description>Prunes a tree down to the provided set of taxa</description>
+	<command interpreter="perl">phylotastic.pl PruneOMatic -i $infile -t $taxa -o $output</command>
+	<inputs>                
+		<param format="adjacency_list" name="infile" type="data" label="Input tree"/>
+		<param format="txt" name="taxa" type="data" label="Taxa to keep"/>
+	</inputs>
+	<outputs>
+		<data format="adjacency_list" name="output" />
+	</outputs>
+	<help>Prunes the input tree down to the specified set of taxa.</help>
+</tool>

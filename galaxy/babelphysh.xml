@@ -1,0 +1,45 @@
+<tool id="babelphysh" name="BabelPhysh">
+	<!-- this is a tool config file for galaxy -->
+	<description>Translates between phylogenetic file formats</description>
+	<command interpreter="perl">phylotastic.pl BabelPhysh -i $infile -d $deserializer -s $serializer -o $output</command>
+	<inputs>
+		<param name="deserializer" type="select" label="Input data type">
+			<option value="nexus">NEXUS</option>
+			<option value="newick">Newick</option>
+			<option value="nexml">NeXML</option>
+			<option value="phyloxml">PhyloXML</option>
+			<option value="adjacency">Adjacency table</option>
+		</param>
+		<param name="serializer" type="select" label="Output data type">
+			<option value="nexus">NEXUS</option>
+			<option value="newick">Newick</option>
+			<option value="nexml">NeXML</option>
+			<option value="phyloxml">PhyloXML</option>
+			<option value="json">JSON</option>
+			<option value="adjacency">Adjacency table</option>
+		</param>                
+		<param format="newick" name="infile" type="data" label="Input file"/>
+	</inputs>
+	<outputs>
+		<data format="nexml" name="output">
+			<change_format>
+				<when input="serializer" value="nexus" format="nexus" />
+				<when input="serializer" value="newick" format="newick" />
+				<when input="serializer" value="nexml" format="nexml" />
+				<when input="serializer" value="phyloxml" format="phyloxml" />
+				<when input="serializer" value="json" format="json" />
+				<when input="serializer" value="adjacency" format="adjacency" />
+				<when input="serializer" value="ancestor" format="ancestor" />
+			</change_format>                        
+		</data>
+	</outputs>
+	<!--tests>
+	<test>
+		<param name="input" value="fa_gc_content_input.fa"/>
+		<output name="out_file1" file="fa_gc_content_output.txt"/>
+	</test>
+	</tests-->
+	<help>
+	This tool translates between commonly used file formats in phylogenetics
+	</help>
+</tool>

@@ -1,0 +1,12 @@
+<tool id="tnrsclient" name="Taxonomic Name Resolution Service">
+	<!-- this is a tool config file for galaxy -->
+	<description>Annotates taxa with URIs from taxonomies</description>
+	<command interpreter="perl">phylotastic.pl TNRS -i $infile -o $outfile</command>
+	<inputs>                
+		<param format="txt" name="infile" type="data" label="Input taxa list"/>
+	</inputs>
+	<outputs>
+		<data format="tabular" name="outfile" />
+	</outputs>
+	<help>Annotates taxa with URIs from taxonomies</help>
+</tool>
