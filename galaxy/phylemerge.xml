@@ -31,6 +31,7 @@
 			<option value="json">JSON</option>
 			<option value="adjacency">Adjacency table</option>
 			<option value="taxlist">Taxon table</option>
+			<option value="html">Web page</option>
 		</param>
 		
 		<param name="whitespace" type="text" label="Replace with spaces"/>
@@ -45,6 +46,7 @@
 				<when input="serializer" value="json" format="js" />
 				<when input="serializer" value="adjacency" format="adjacency_list" />
 				<when input="serializer" value="taxlist" format="tabular" />
+				<when input="serializer" value="html" format="html" />
 			</change_format>                        
 		</data>
 	</outputs>
