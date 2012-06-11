@@ -9,6 +9,7 @@
 			<option value="nexml">NeXML</option>
 			<option value="phyloxml">PhyloXML</option>
 			<option value="adjacency">Adjacency table</option>
+			<option value="taxlist">Taxon table</option>
 		</param>
 		<param name="serializer" type="select" label="Output data type">
 			<option value="nexus">NEXUS</option>
@@ -17,19 +18,22 @@
 			<option value="phyloxml">PhyloXML</option>
 			<option value="json">JSON</option>
 			<option value="adjacency">Adjacency table</option>
+			<option value="taxlist">Taxon table</option>
+			<option value="html">Web page</option>
 		</param>                
 		<param format="newick" name="infile" type="data" label="Input file"/>
 	</inputs>
 	<outputs>
 		<data format="nexml" name="output">
 			<change_format>
-				<when input="serializer" value="nexus" format="nexus" />
-				<when input="serializer" value="newick" format="newick" />
+				<when input="serializer" value="nexus" format="nex" />
+				<when input="serializer" value="newick" format="dnd" />
 				<when input="serializer" value="nexml" format="nexml" />
 				<when input="serializer" value="phyloxml" format="phyloxml" />
-				<when input="serializer" value="json" format="json" />
+				<when input="serializer" value="json" format="js" />
 				<when input="serializer" value="adjacency" format="adjacency_list" />
-				<when input="serializer" value="ancestor" format="ancestor" />
+				<when input="serializer" value="taxlist" format="tabular" />
+				<when input="serializer" value="html" format="html" />
 			</change_format>                        
 		</data>
 	</outputs>
