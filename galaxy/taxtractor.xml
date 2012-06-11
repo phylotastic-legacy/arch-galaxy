@@ -15,8 +15,8 @@
 			<option value="taxlist">Plain text</option>
 		</param>               
 		<param format="newick" name="infile" type="data" label="Input file"/>
-		<param name="search" type="text" label="Search pattern"/>
-		<param name="replace" type="text" label="Replace pattern"/>
+		<param name="search" type="text" label="Search pattern" value=" "/>
+		<param name="replace" type="text" label="Replace pattern" value=" "/>
 	</inputs>
 	<outputs>
 		<data format="txt" name="output"/>
