@@ -11,30 +11,38 @@ use Bio::Phylo::Util::Exceptions 'throw';
 
 =head1 NAME
 
-Bio::PhyloTastic::PhyloTastic - Perl clients for PhyloTastic
+Bio::PhyloTastic - Perl clients for PhyloTastic
 
 =head1 DESCRIPTION
 
-PhyloTastic is an envisioned pipeline for pruning and annotating phylogenetic
-megatrees. This class is the superclass for several service client classes. The
-functionality of these client classes is most easily used on the command line,
-using the C<phylotastic> command line utility that comes with this distribution.
+PhyloTastic (L<http://phylotastic.org>) is community effort to develop
+interoperable tools for pruning and annotating phylogenetic megatrees. This
+package contributes to that effort by providing simple client access to web
+services that perform steps in the pipeline. The functionality of these clients
+readily available using the C<phylotastic> command line utility that comes with
+this distribution.
 
 The basic usage is:
 
  $ phylotastic ModuleName <args>
 
-Where C<ModuleName> is part of the package name of one of the client classes
-(e.g. C<BabelPhysh>). The command line arguments of these classes are somewhat
-variabel, though the typically take one or more C<--infile=filename> arguments
-and an C<--outfile=filename> argument. For the other arguments you can consult
-the usage message for each module as follows:
+Where C<ModuleName> is the last part of the package name of one of the client
+classes (e.g. C<BabelPhysh>). The command line arguments of these classes are
+somewhat variable, though they typically take one or more C<--infile=filename>
+arguments and an C<--outfile=filename> argument. For the other arguments you
+can consult the usage message for each module as follows:
 
  $ phylotastic ModuleName --help
 
 The full documentation for each module (such as it is), can be viewed like this:
 
  $ phylotastic ModuleName --man
+
+For more verbose output during the execution of a module, provide the
+C<--verbose> flag with a numerical argument (0 = only fatal message, 1 = error,
+2 = warn, 3 = info, 4 = debug).
+
+ $ phylotastic ModuleName --verbose=4 <args>
 
 =head1 SEE ALSO
 
@@ -66,6 +74,13 @@ Extracts taxon labels from files.
 
 Taxonomic name resolution service.
 
+=item L<Bio::Phylo::IO>
+
+Reading and writing of all data is done using L<Bio::Phylo::IO>, which uses
+the deserializers in the Bio::Phylo::Parsers namespace and the serializers in
+the Bio::Phylo::Unparsers namespace. Consequently, the input formats that are
+available are the ones that Bio::Phylo supports.
+
 =back
 
 In addition, work is under way to develop Galaxy config files that wrap these
@@ -76,7 +91,7 @@ L<https://github.com/phylotastic/arch-galaxy/tree/master/galaxy>
 =cut
 
 # release number
-our $VERSION = '0.1';
+our $VERSION = '0.2';
 
 # Bio::Phylo::Util::Logger
 my $log;

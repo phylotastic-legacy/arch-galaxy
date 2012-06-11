@@ -18,7 +18,7 @@ Bio::PhyloTastic::DateLife - Fetches calibration ages for tree nodes
 =head1 DESCRIPTION
 
 This module attempts to populate an input tree with node ages it obtains from
-L<datelife.org>.
+L<http://datelife.org>.
 
 =head1 OPTIONS AND ARGUMENTS
 
@@ -30,7 +30,7 @@ An input file. Required.
 
 =item -d informat
 
-An input format, including NEXUS, Newick, NeXML, PhyloXML, TaxList. Optional.
+An input format, such as NEXUS, Newick, NeXML, PhyloXML, TaxList. Optional.
 Default is adjacency table.
 
 =item -o outfile
@@ -39,7 +39,7 @@ An output file name. If '-', prints output to STDOUT. Required.
 
 =item -s outformat
 
-An output format, including NeXML, TaxList. Optional. Default is adjacency
+An output format, such as NeXML, TaxList. Optional. Default is adjacency
 table.
 
 =back

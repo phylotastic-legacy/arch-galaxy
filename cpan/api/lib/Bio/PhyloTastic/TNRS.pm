@@ -19,8 +19,7 @@ Bio::PhyloTastic::TNRS - Taxonomic Name Reconciliation Service
 
 =head1 DESCRIPTION
 
-This module calls the TNRS service that was developed during the PhyloTastic
-hackathon at NESCent in June 2012.
+This module calls the TNRS service L<http://api.phylotastic.org/tnrs/>
 
 =head1 OPTIONS AND ARGUMENTS
 

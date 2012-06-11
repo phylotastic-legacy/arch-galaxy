@@ -29,11 +29,11 @@ An output file name. If '-', prints output to STDOUT. Required.
 
 =item -d informat
 
-An input format, including NEXUS, Newick, NeXML, PhyloXML, TaxList. Required.
+An input format, such as NEXUS, Newick, NeXML, PhyloXML, TaxList. Required.
 
 =item -s outformat
 
-An output format, including NeXML, TaxList. Optional. Default is TaxList (i.e.
+An output format, such as NeXML, TaxList. Optional. Default is TaxList (i.e.
 a simple text file).
 
 =item -search pattern
@@ -52,8 +52,8 @@ What the value of -search gets replaced with.
 
 # these are used as "perl compatible regular expressions" to process
 # the labels, so you could strip out accession numbers and such
-my $search = ' ';
-my $replace = ' ';
+my $search;
+my $replace;
 my $serializer = 'taxlist';
 
 sub _get_args {	
@@ -86,7 +86,9 @@ sub _run {
 		}
 		$taxa->visit(sub{
 			my $name = shift->get_name;
-			$name =~ s/$search/$replace/g;
+			if ( defined $search and defined $replace ) {
+				$name =~ s/$search/$replace/g;
+			}
 			$names{$name} = 1
 		});
 	}

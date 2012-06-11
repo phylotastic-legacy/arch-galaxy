@@ -16,9 +16,9 @@ Bio::PhyloTastic::PhyleMerge - Merges contents of phylogenetic data files
 =head1 DESCRIPTION
 
 This module merges the contents of commonly encountered phylogenetic data
-formats. The module attempts to join on taxon labels from the different files,
+formats. The module attempts to 'join' on taxon labels from the different files,
 optionally after pre-processing the labels, e.g. by removing quotes, replacing
-underscores with spaces and stripping away name suffixes (e.g. accessions).
+underscores with spaces and stripping away name suffixes (such as accessions).
 
 =head1 OPTIONS AND ARGUMENTS
 
@@ -30,7 +30,7 @@ An input file. Required. Can be used multiple times.
 
 =item -d informat
 
-An input format, including NEXUS, Newick, NeXML, PhyloXML, TaxList. Required.
+An input format, such as NEXUS, Newick, NeXML, PhyloXML, TaxList. Required.
 Can be used multiple times (in which case the order must match those of the
 input files).
 

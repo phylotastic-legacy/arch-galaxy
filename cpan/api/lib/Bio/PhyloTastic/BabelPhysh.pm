@@ -26,7 +26,7 @@ An input file. Required.
 
 =item -d informat
 
-An input format, including NEXUS, Newick, NeXML, PhyloXML, TaxList. Required.
+An input format, such as NEXUS, Newick, NeXML, PhyloXML, TaxList. Required.
 
 =item -o outfile
 
@@ -34,7 +34,7 @@ An output file name. If '-', prints output to STDOUT. Required.
 
 =item -s outformat
 
-An output format, including NeXML, TaxList. Required.
+An output format, such as NeXML, TaxList. Required.
 
 =back
 

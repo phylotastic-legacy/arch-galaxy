@@ -22,7 +22,7 @@ This module prunes an input tree down to a specified set of taxa.
 
 =item -i infile
 
-An input file. Default is a text file with one name per line. Required.
+An input file. Required. Default is an adjacency table.
 
 =item -o outfile
 
@@ -34,12 +34,12 @@ A file with a list of taxa names to retain, one name per line. Required.
 
 =item -d informat
 
-An input format, including NEXUS, Newick, NeXML, PhyloXML, TaxList. Optional.
+An input format, e.g. NEXUS, Newick, NeXML, PhyloXML, TaxList. Optional.
 Default is adjacency table.
 
 =item -s outformat
 
-An output format, including NeXML, TaxList. Optional. Default is adjacency
+An output format, e.g. NeXML, TaxList. Optional. Default is adjacency
 table.
 
 =back
