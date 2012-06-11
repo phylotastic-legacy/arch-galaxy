@@ -127,6 +127,38 @@ sub _pod2usage {
 	});
 }
 
+=head1 METHODS
+
+This distribution can actually also be used within scripts or modules. The
+basic idea is to invoke C<run> on a service package name, with named arguments
+(i.e. key value pairs) that match those as required on the command line.
+The following example of this behaviour writes the input NeXML file $infile
+as NEXUS to $outfile:
+
+ Bio::PhyloTastic::BabelPhysh->run(
+	'-infile'       => $infile,
+	'-deserializer' => 'nexml',
+	'-outfile'      => $outfile,
+	'-serializer'   => 'nexus',
+ );
+
+=over
+
+=item run
+
+The C<run> method is a static method, i.e. called on the package, like so:
+
+ Bio::PhyloTastic::ModuleName->run(%args);
+
+The implementation in this superclass does argument checking and input file
+parsing before it dispatches the parsed data to an implementing method in the
+child class called C<_run>. That implementing method returns a
+L<Bio::Phylo::Project> object that is subsequently serialized here.
+
+=back
+
+=cut
+
 sub run {
 	my $class = shift;
 	my %args = ( $class->_get_default_args, $class->_get_args );
