@@ -39,7 +39,7 @@ sub run {
 	# instantiate logger
 	$log = Bio::Phylo::Util::Logger->new(
 		'-level' => $verbosity,
-		'-class' => 'main'
+		'-class' => __PACKAGE__,
 	);
 	
 	# parse tree
