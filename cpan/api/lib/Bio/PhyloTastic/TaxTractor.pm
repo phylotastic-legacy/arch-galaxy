@@ -1,41 +1,30 @@
 package Bio::PhyloTastic::TaxTractor;
 use strict;
 use warnings;
-use Getopt::Long;
-use Bio::Phylo::IO 'parse';
-use Bio::Phylo::Util::Logger ':levels';
+use base 'Bio::PhyloTastic';
 
-sub run {
-		
-	# these are used as "perl compatible regular expressions" to process
-	# the labels, so you could strip out accession numbers and such
-	my $search = '';
-	my $replace = '';
+# these are used as "perl compatible regular expressions" to process
+# the labels, so you could strip out accession numbers and such
+my $search = ' ';
+my $replace = ' ';
 
-	# process command line arguments
-	my ( $infile, $format, $outfile );
-	my $verbosity = DEBUG;
-	GetOptions(
-		'infile=s'  => \$infile,
-		'format=s'  => \$format,
-		'search=s'  => \$search,
-		'replace=s' => \$replace,
-		'outfile=s' => \$outfile,
-		'verbose+'  => \$verbosity,
+sub _get_args {
+	my $serializer = 'taxlist';
+	return (
+		'search=s'     => \$search,
+		'replace=s'    => \$replace,
+		'serializer=s' => \$serializer,
 	);
+}
+
+sub _run {		
+	my ( $class, $project ) = @_;
 	
-	# instantiate logger
-	my $log = Bio::Phylo::Util::Logger->new(
-		'-level' => $verbosity,
-		'-class' => __PACKAGE__,
-	);
+	# fetch factory object
+	my $fac = $class->_fac;
 	
-	# parse infile
-	my $project = parse(
-		'-format' => $format,
-		'-file'   => $infile,
-		'-as_project' => 1
-	);
+	# create merged taxa block
+	my $merged_taxa = $fac->create_taxa;
 	
 	# compile hash set of distinct names, that are
 	# processed using s/$search/$replace/
@@ -55,12 +44,11 @@ sub run {
 		});
 	}
 	
-	# print output
-	{
-		open my $fh, '>', $outfile or die $!;
-		print $fh join "\n", keys %names;
-		close $fh;
-	}
+	# create distinct taxa
+	$merged_taxa->insert( $fac->create_taxon( '-name' => $_ ) ) for sort { $a cmp $b } keys %names;
+	
+	# return result
+	return $merged_taxa;
 }
 
 1;

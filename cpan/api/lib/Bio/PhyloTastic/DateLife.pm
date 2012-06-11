@@ -2,12 +2,10 @@ package Bio::PhyloTastic::DateLife;
 use strict;
 use warnings;
 use URI::Escape;
-use Getopt::Long;
 use LWP::UserAgent;
 use Scalar::Util 'looks_like_number';
-use Bio::Phylo::Util::Logger;
-use Bio::Phylo::IO qw'parse unparse';
 use Bio::Phylo::Util::CONSTANT ':objecttypes';
+use base 'Bio::PhyloTastic';
 
 # url for the datelife.org RESTful service
 my $BASE_URL = 'http://datelife.org/cgi-bin/R/result?taxa=%s,%s&format=bestguess&partial=liberal&useembargoed=yes';
@@ -18,50 +16,30 @@ my $DL_NS_URI = 'http://datelife.org/terms.owl#';
 # instantiate user agent to fetch ages
 my $ua = LWP::UserAgent->new;
 
-# Bio::Phylo::Util::Logger
-my $log;
-
-sub run {
-
-	# process command line arguments
-	my ( $infile, $outfile );
+sub _get_args {
 	my $deserializer = 'adjacency';
 	my $serializer   = 'adjacency';
-	my $verbosity    = 2;
-	GetOptions(
-		'infile=s'       => \$infile,
-		'verbose+'       => \$verbosity,
-		'deserializer=s' => \$deserializer,
+	return (
 		'serializer=s'   => \$serializer,
-		'outfile=s'      => \$outfile,
-	);
-	
-	# instantiate logger
-	$log = Bio::Phylo::Util::Logger->new(
-		'-level' => $verbosity,
-		'-class' => __PACKAGE__,
-	);
-	
-	# parse tree
-	my ($tree) = @{parse(
-		'-format' => $deserializer,
-		'-file'   => $infile,
-		'-as_project' => 1,
-	)->get_items(_TREE_) };
-	
-	# fetch ages from DatingLife
-	recurse_fetch($tree);
-	
-	# write output
-	write_tree(
-		'-tree'    => $tree,
-		'-outfile' => $outfile,
-		'-format'  => $serializer,
+		'deserializer=s' => [ $deserializer ],
 	);
 }
 
+sub _run {
+	my ( $class, $project ) = @_;
+	
+	# parse tree
+	my ($tree) = @{ $project->get_items(_TREE_) };
+	
+	# fetch ages from DatingLife
+	_recurse_fetch($tree);
+	
+	# write output
+	return $tree;
+}
 
-sub recurse_fetch {
+
+sub _recurse_fetch {
 	my $tree = shift;
 	
 	# fetch the ages, create branch lengths
@@ -88,7 +66,7 @@ sub recurse_fetch {
 				my ( $left, $right ) = ( $tips[0], $tips[-1] );
 				
 				# fetch the age
-				my $age = fetch_age($left,$right) || 0;
+				my $age = _fetch_age($left,$right) || 0;
 				$node->set_generic( 'age' => $age );
 				
 				# apply branch lengths to children
@@ -103,19 +81,10 @@ sub recurse_fetch {
 
 }
 
-sub write_tree {
-	my %args = @_;
-	my $outfile = $args{'-outfile'};
-	my $tree    = $args{'-tree'};
-	my $format  = $args{'-format'};
-	# create output handle or STDOUT
-	open my $fh, '>', $outfile || \*STDOUT or die $!;
-	print $fh unparse( '-format' => $format, '-phylo' => $tree );
-}
-
 # does a request to datelife
-sub fetch_age {
+sub _fetch_age {
 	my ($left,$right) = @_;
+	my $log = __PACKAGE__->_log;
 	
 	# construct datelife url
 	my $url = sprintf $BASE_URL, uri_escape($left), uri_escape($right);

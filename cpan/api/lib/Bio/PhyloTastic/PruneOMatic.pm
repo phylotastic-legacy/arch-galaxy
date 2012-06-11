@@ -1,28 +1,26 @@
 package Bio::PhyloTastic::PruneOMatic;
 use strict;
 use warnings;
-use Getopt::Long;
-use Bio::Phylo::IO qw'parse unparse';
 use Bio::Phylo::Util::CONSTANT ':objecttypes';
-use base 'Exporter';
-our @EXPORT_OK = qw'run';
+use base 'Bio::PhyloTastic';
 
-sub run {
+# we will need this argument later on
+my $taxa;
 
-	# process command line arguments
-	my ( $infile, $taxa, $outfile );
-	GetOptions(
-		'infile=s'  => \$infile,
-		'taxa=s'    => \$taxa,
-		'outfile=s' => \$outfile,
+sub _get_args {	
+	my $serializer = 'adjacency';
+	return (
+		'taxa=s'         => \$taxa,
+		'deserializer=s' => [ 'adjacency' ],
+		'serializer=s'   => \$serializer,
 	);
+}
+
+sub _run {
+	my ( $class, $project ) = @_;
 	
 	# parse tree
-	my ($tree) = @{ parse(
-		'-file'       => $infile,
-		'-format'     => 'adjacency',
-		'-as_project' => 1,
-	)->get_items(_TREE_) };
+	my ($tree) = @{ $project->get_items(_TREE_) };
 	
 	# parse taxa
 	my @taxa;
@@ -38,12 +36,8 @@ sub run {
 	# do the pruning
 	my $pruned = $tree->keep_tips(\@taxa);
 	
-	# open handle
-	open my $fh, '>', $outfile or die $!;
-	
-	# print output
-	print $fh unparse( '-format' => 'adjacency', '-phylo' => $tree );
-
+	# return result
+	return $pruned;
 }
 
 1;

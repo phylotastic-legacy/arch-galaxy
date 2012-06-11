@@ -3,51 +3,36 @@ use strict;
 use warnings;
 use JSON;
 use URI::Escape;
-use Getopt::Long;
 use Data::Dumper;
 use LWP::UserAgent;
-use Bio::Phylo::Util::Logger ':levels';
-use Bio::Phylo::IO qw'parse unparse';
+use Bio::Phylo::IO 'parse';
 use Bio::Phylo::Util::CONSTANT ':objecttypes';
+use base 'Bio::PhyloTastic';
 
 # URL for the taxonomic name resolution service
 my $TNRS_URL = 'http://128.196.142.27:3000/submit';
 
-# process command line arguments
-my $verbosity = DEBUG;
-my $timeout   = 60;
-my $wait      = 5;
-
-# Bio::Phylo::Util::Logger
-my $log;
-
-# output file to write to
-my $outfile;
-
-sub run {
-
-	my $infile;
-	GetOptions(
-		'infile=s'  => \$infile,
-		'outfile=s' => \$outfile,
-		'verbose+'  => \$verbosity,
+sub _get_args {
+	my $timeout = 60;
+	my $wait    = 5;
+	my $serializer = 'taxlist';
+	return (
 		'timeout=i' => \$timeout,
 		'wait=i'    => \$wait,
+		'deserializer=s' => [ 'taxlist' ],
+		'serializer=s'   => \$serializer,
 	);
+}
+
+sub _run {
+	my ( $class, $project ) = @_;
 	
-	# instantiate logger
-	$log = Bio::Phylo::Util::Logger->new(
-		'-level' => $verbosity,
-		'-class' => __PACKAGE__,
-	);
+	# fetch args
+	my %args = $class->_get_args;
+	my $wait = ${ $args{'wait=i'} };
 	
-	# parse input
-	my $project = parse(
-		'-format'     => 'taxlist',
-		'-file'       => $infile,
-		'-as_project' => 1,
-	);
-	$log->info("parsed data from $infile");
+	# fetch logger
+	my $log = $class->_log;
 	
 	# get taxa
 	my ($taxa) = @{ $project->get_items(_TAXA_) };
@@ -57,17 +42,17 @@ sub run {
 	my %taxon_for_name = map { $_->get_name => $_ } @{ $taxa->get_entities };
 	
 	# do the request
-	my $result = fetch_url( $TNRS_URL, 'post', 'query' => join "\n", keys %taxon_for_name ); # this is a redirect
+	my $result = _fetch_url( $TNRS_URL, 'post', 'query' => join "\n", keys %taxon_for_name ); # this is a redirect
 	my $obj = decode_json($result);
 	
 	# start polling
 	while(1) {
 		sleep $wait;
-		my $result = fetch_url($obj->{'uri'},'get');
+		my $result = _fetch_url($obj->{'uri'},'get');
 		my $obj = decode_json($result);
 		if ( $obj->{'names'} ) {
 			$log->debug(Dumper($obj));
-			process_result($result);
+			return _process_result($result);
 			exit(0);
 		}
 	}
@@ -75,9 +60,14 @@ sub run {
 }
 
 # fetch data from a URL
-sub fetch_url {
+sub _fetch_url {
 	my ( $url, $method, %form ) = @_;
+	my $log = __PACKAGE__->_log;
 	$log->info("going to fetch $url");
+	
+	# fetch args
+	my %args = __PACKAGE__->_get_args;
+	my $timeout = ${ $args{'timeout=i'} };	
 	
 	# instantiate user agent
 	my $ua = LWP::UserAgent->new;
@@ -100,8 +90,9 @@ sub fetch_url {
 }
 
 # parses the final TNRS result, maps back to input taxa, creates output
-sub process_result {
+sub _process_result {
 	my $content = shift;
+	my $log = __PACKAGE__->_log;
 	
 	# parse result
 	my ($tnrs_taxa) = @{ parse(
@@ -119,28 +110,8 @@ sub process_result {
 		}
 	}
 	
-	# open output handle
-	open my $fh, '>', $outfile or die $!;
-	
-	# print header
-	print $fh 'name';
-	if ( @predicates ) {
-		print $fh "\t";
-		print $fh join "\t", @predicates;
-	}
-	print $fh "\n";
-	
-	# print taxon metadata as tab-delimited table
-	$tnrs_taxa->visit(sub {
-		my $taxon = shift;
-		print $fh $taxon->get_name;
-		if ( @predicates ) {
-			print $fh "\t";
-			my @values = map { $taxon->get_meta_object($_) || '' } @predicates;
-			print $fh join "\t", @values;
-		}
-		print $fh "\n";
-	});
+	# return result
+	return $tnrs_taxa;
 }
 
 1;
