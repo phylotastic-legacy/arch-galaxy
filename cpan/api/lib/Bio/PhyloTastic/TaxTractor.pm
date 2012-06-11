@@ -27,7 +27,7 @@ sub run {
 	# instantiate logger
 	my $log = Bio::Phylo::Util::Logger->new(
 		'-level' => $verbosity,
-		'-class' => 'main',
+		'-class' => __PACKAGE__,
 	);
 	
 	# parse infile
