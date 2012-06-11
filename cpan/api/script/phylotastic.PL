@@ -14,6 +14,11 @@ print OUT <<'!NO!SUBS!';
 
 my $tool = shift;
 
+# this will definitely not work
+if ( not $tool ) {
+	die "Usage: phylotastic ModuleName <args>\n (see 'man Bio::PhyloTastic')\n";
+}
+
 # create package name
 my $package = "Bio/PhyloTastic/$tool.pm";
 my $class = "Bio::PhyloTastic::$tool";
