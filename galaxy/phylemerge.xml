@@ -1,0 +1,60 @@
+<tool id="phylemerge" name="PhyleMerge">
+	<!-- this is a tool config file for galaxy -->
+	<description>Merges phylogenetic file formats</description>
+	<command interpreter="perl">phylotastic.pl PhyleMerge -i $infile1 -d $deserializer1 -w '$whitespace' -i $infile2 -d $deserializer2 -s $serializer -o $output</command>
+	<inputs>
+		<param name="deserializer1" type="select" label="Data type file 1">
+			<option value="nexus">NEXUS</option>
+			<option value="newick">Newick</option>
+			<option value="nexml">NeXML</option>
+			<option value="phyloxml">PhyloXML</option>
+			<option value="adjacency">Adjacency table</option>
+			<option value="taxlist">Taxon table</option>
+		</param>
+		<param format="newick" name="infile1" type="data" label="Input file 1"/>
+		
+		<param name="deserializer2" type="select" label="Data type file 2">
+			<option value="nexus">NEXUS</option>
+			<option value="newick">Newick</option>
+			<option value="nexml">NeXML</option>
+			<option value="phyloxml">PhyloXML</option>
+			<option value="adjacency">Adjacency table</option>
+			<option value="taxlist">Taxon table</option>
+		</param>
+		<param format="newick" name="infile2" type="data" label="Input file 2"/>
+		
+		<param name="serializer" type="select" label="Output data type">
+			<option value="nexus">NEXUS</option>
+			<option value="newick">Newick</option>
+			<option value="nexml">NeXML</option>
+			<option value="phyloxml">PhyloXML</option>
+			<option value="json">JSON</option>
+			<option value="adjacency">Adjacency table</option>
+			<option value="taxlist">Taxon table</option>
+		</param>
+		
+		<param name="whitespace" type="text" label="Replace with spaces"/>
+	</inputs>
+	<outputs>
+		<data format="nexml" name="output">
+			<change_format>
+				<when input="serializer" value="nexus" format="nex" />
+				<when input="serializer" value="newick" format="dnd" />
+				<when input="serializer" value="nexml" format="nexml" />
+				<when input="serializer" value="phyloxml" format="phyloxml" />
+				<when input="serializer" value="json" format="js" />
+				<when input="serializer" value="adjacency" format="adjacency_list" />
+				<when input="serializer" value="taxlist" format="tabular" />
+			</change_format>                        
+		</data>
+	</outputs>
+	<!--tests>
+	<test>
+		<param name="input" value="fa_gc_content_input.fa"/>
+		<output name="out_file1" file="fa_gc_content_output.txt"/>
+	</test>
+	</tests-->
+	<help>
+	Merges two phylogenetic data files
+	</help>
+</tool>
