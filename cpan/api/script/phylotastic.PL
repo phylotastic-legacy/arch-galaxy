@@ -1,14 +1,7 @@
 #!perl
 use Config;
-use File::Basename qw(&basename &dirname);
-use Cwd;
-
-$origdir = cwd;
-chdir dirname($0);
 $file = shift @ARGV;
-
 open OUT,">$file" or die "Can't create $file: $!";
-
 print "Extracting $file (with variable substitutions)\n";
 
 print OUT <<"!GROK!THIS!";
@@ -49,5 +42,4 @@ $class->run;
 !NO!SUBS!
 close OUT or die "Can't close $file: $!";
 chmod 0755, $file or die "Can't reset permissions for $file: $!\n";
-chdir $origdir;
 
