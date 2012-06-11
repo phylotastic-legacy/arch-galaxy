@@ -1,7 +1,7 @@
 <tool id="taxtractor" name="TaxTractor">
 	<!-- this is a tool config file for galaxy -->
 	<description>Extracts and processes taxon labels from various phylogenetic file formats</description>
-	<command interpreter="perl">phylotastic.pl TaxTractor -i $infile -f $format -s '$search' -r '$replace' -o $output</command>
+	<command interpreter="perl">phylotastic.pl TaxTractor -i $infile -d $format -search '$search' -r '$replace' -o $output</command>
 	<inputs>
 		<param name="format" type="select" label="Input data type">
 			<option value="nexus">NEXUS</option>
