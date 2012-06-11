@@ -1,0 +1,4 @@
+\.git
+MANIFEST\.skip
+\.DS_Store
+Makefile$
