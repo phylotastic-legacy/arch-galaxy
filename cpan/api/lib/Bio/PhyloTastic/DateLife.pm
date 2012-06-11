@@ -7,6 +7,45 @@ use Scalar::Util 'looks_like_number';
 use Bio::Phylo::Util::CONSTANT ':objecttypes';
 use base 'Bio::PhyloTastic';
 
+=head1 NAME
+
+Bio::PhyloTastic::DateLife - Fetches calibration ages for tree nodes
+
+=head1 SYNOPSYS
+
+ phylotastic DateLife -i <infile> -o <outfile>
+
+=head1 DESCRIPTION
+
+This module attempts to populate an input tree with node ages it obtains from
+L<datelife.org>.
+
+=head1 OPTIONS AND ARGUMENTS
+
+=over
+
+=item -i infile
+
+An input file. Required.
+
+=item -d informat
+
+An input format, including NEXUS, Newick, NeXML, PhyloXML, TaxList. Optional.
+Default is adjacency table.
+
+=item -o outfile
+
+An output file name. If '-', prints output to STDOUT. Required.
+
+=item -s outformat
+
+An output format, including NeXML, TaxList. Optional. Default is adjacency
+table.
+
+=back
+
+=cut
+
 # url for the datelife.org RESTful service
 my $BASE_URL = 'http://datelife.org/cgi-bin/R/result?taxa=%s,%s&format=bestguess&partial=liberal&useembargoed=yes';
 
@@ -16,9 +55,11 @@ my $DL_NS_URI = 'http://datelife.org/terms.owl#';
 # instantiate user agent to fetch ages
 my $ua = LWP::UserAgent->new;
 
+# defaults
+my $deserializer = 'adjacency';
+my $serializer   = 'adjacency';
+
 sub _get_args {
-	my $deserializer = 'adjacency';
-	my $serializer   = 'adjacency';
 	return (
 		'serializer=s'   => \$serializer,
 		'deserializer=s' => [ $deserializer ],

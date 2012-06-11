@@ -4,6 +4,61 @@ use warnings;
 use Bio::Phylo::Util::CONSTANT ':objecttypes';
 use base 'Bio::PhyloTastic';
 
+=head1 NAME
+
+Bio::PhyloTastic::PhyleMerge - Merges contents of phylogenetic data files
+
+=head1 SYNOPSYS
+
+ phylotastic PhyleMerge -i <file1> -d <format1> \
+	-i <file2> -d <format2> -o <outfile> -w '_' -u 1 -p 2
+
+=head1 DESCRIPTION
+
+This module merges the contents of commonly encountered phylogenetic data
+formats. The module attempts to join on taxon labels from the different files,
+optionally after pre-processing the labels, e.g. by removing quotes, replacing
+underscores with spaces and stripping away name suffixes (e.g. accessions).
+
+=head1 OPTIONS AND ARGUMENTS
+
+=over
+
+=item -i infile
+
+An input file. Required. Can be used multiple times.
+
+=item -d informat
+
+An input format, including NEXUS, Newick, NeXML, PhyloXML, TaxList. Required.
+Can be used multiple times (in which case the order must match those of the
+input files).
+
+=item -o outfile
+
+An output file name. If '-', prints output to STDOUT. Required.
+
+=item -s outformat
+
+An output format, including NeXML, TaxList. Required.
+
+=item -w <arg>
+
+Replaces <arg> with whitespace before attempting to join taxon labels.
+
+=item -u 1
+
+If true, strips single and double quotes before attempting to join taxon labels.
+
+=item -p <num>
+
+Strips taxon labels down to the first <num> words (e.g. 2 for binomials) before
+attempting to join taxon labels.
+
+=back
+
+=cut
+
 # if true, names are stripped of single and double quotes
 my $unquote;
 

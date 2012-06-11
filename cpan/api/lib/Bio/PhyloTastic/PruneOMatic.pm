@@ -4,11 +4,53 @@ use warnings;
 use Bio::Phylo::Util::CONSTANT ':objecttypes';
 use base 'Bio::PhyloTastic';
 
-# we will need this argument later on
-my $taxa;
+=head1 NAME
 
-sub _get_args {	
-	my $serializer = 'adjacency';
+Bio::PhyloTastic::PruneOMatic - Prunes a megatree down to size
+
+=head1 SYNOPSYS
+
+ phylotastic PruneOMatic -i <infile> -t <taxa> -o <outfile>
+
+=head1 DESCRIPTION
+
+This module prunes an input tree down to a specified set of taxa.
+
+=head1 OPTIONS AND ARGUMENTS
+
+=over
+
+=item -i infile
+
+An input file. Default is a text file with one name per line. Required.
+
+=item -o outfile
+
+An output file name. If '-', prints output to STDOUT. Required.
+
+=item -t taxa
+
+A file with a list of taxa names to retain, one name per line. Required.
+
+=item -d informat
+
+An input format, including NEXUS, Newick, NeXML, PhyloXML, TaxList. Optional.
+Default is adjacency table.
+
+=item -s outformat
+
+An output format, including NeXML, TaxList. Optional. Default is adjacency
+table.
+
+=back
+
+=cut
+
+# we will need these arguments later on
+my $taxa;
+my $serializer = 'adjacency';
+
+sub _get_args {		
 	return (
 		'taxa=s'         => \$taxa,
 		'deserializer=s' => [ 'adjacency' ],

@@ -9,13 +9,62 @@ use Bio::Phylo::IO 'parse';
 use Bio::Phylo::Util::CONSTANT ':objecttypes';
 use base 'Bio::PhyloTastic';
 
+=head1 NAME
+
+Bio::PhyloTastic::TNRS - Taxonomic Name Reconciliation Service
+
+=head1 SYNOPSYS
+
+ phylotastic TNRS -infile <infile> -outfile <outfile>
+
+=head1 DESCRIPTION
+
+This module calls the TNRS service that was developed during the PhyloTastic
+hackathon at NESCent in June 2012.
+
+=head1 OPTIONS AND ARGUMENTS
+
+=over
+
+=item -i infile
+
+An input file. Default is a text file with one name per line. Required.
+
+=item -o outfile
+
+An output file name. If '-', prints output to STDOUT. Required.
+
+=item -d informat
+
+An input format, including NEXUS, Newick, NeXML, PhyloXML, TaxList. Optional.
+Default is TaxList (i.e. a simple text file).
+
+=item -s outformat
+
+An output format, including NeXML, TaxList. Optional. Default is TaxList (i.e.
+a simple text file).
+
+=item -t timeout
+
+Number of seconds until user agent times out. Optional. Default is 60.
+
+=item -t wait
+
+Number of seconds between polling the TNRS service. Optional. Default is 5.
+
+=back
+
+=cut
+
 # URL for the taxonomic name resolution service
 my $TNRS_URL = 'http://128.196.142.27:3000/submit';
 
+# defaults
+my $timeout = 60;
+my $wait    = 5;
+my $serializer = 'taxlist';
+
 sub _get_args {
-	my $timeout = 60;
-	my $wait    = 5;
-	my $serializer = 'taxlist';
 	return (
 		'timeout=i' => \$timeout,
 		'wait=i'    => \$wait,
@@ -26,10 +75,6 @@ sub _get_args {
 
 sub _run {
 	my ( $class, $project ) = @_;
-	
-	# fetch args
-	my %args = $class->_get_args;
-	my $wait = ${ $args{'wait=i'} };
 	
 	# fetch logger
 	my $log = $class->_log;
@@ -64,10 +109,6 @@ sub _fetch_url {
 	my ( $url, $method, %form ) = @_;
 	my $log = __PACKAGE__->_log;
 	$log->info("going to fetch $url");
-	
-	# fetch args
-	my %args = __PACKAGE__->_get_args;
-	my $timeout = ${ $args{'timeout=i'} };	
 	
 	# instantiate user agent
 	my $ua = LWP::UserAgent->new;
