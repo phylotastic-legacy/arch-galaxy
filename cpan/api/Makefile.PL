@@ -6,7 +6,7 @@ use ExtUtils::MakeMaker;
 WriteMakefile(
     'NAME'         => 'Bio-PhyloTastic',
     'AUTHOR'       => 'Rutger Vos',
-    'PL_FILES'     => {},
+    'PL_FILES'     => { 'script/phylotastic.PL' => 'script/phylotastic' },
     'EXE_FILES'    => [],
     'VERSION_FROM' => 'lib/Bio/PhyloTastic.pm',
     'LICENSE'      => 'perl',
