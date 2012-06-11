@@ -8,7 +8,7 @@ use base 'Bio::PhyloTastic';
 
 Bio::PhyloTastic::PruneOMatic - Prunes a megatree down to size
 
-=head1 SYNOPSYS
+=head1 SYNOPSIS
 
  phylotastic PruneOMatic -i <infile> -t <taxa> -o <outfile>
 

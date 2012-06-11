@@ -8,7 +8,7 @@ use base 'Bio::PhyloTastic';
 
 Bio::PhyloTastic::PhyleMerge - Merges contents of phylogenetic data files
 
-=head1 SYNOPSYS
+=head1 SYNOPSIS
 
  phylotastic PhyleMerge -i <file1> -d <format1> \
 	-i <file2> -d <format2> -o <outfile> -w '_' -u 1 -p 2

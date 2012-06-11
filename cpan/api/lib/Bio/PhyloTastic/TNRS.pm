@@ -13,9 +13,9 @@ use base 'Bio::PhyloTastic';
 
 Bio::PhyloTastic::TNRS - Taxonomic Name Reconciliation Service
 
-=head1 SYNOPSYS
+=head1 SYNOPSIS
 
- phylotastic TNRS -infile <infile> -outfile <outfile>
+ phylotastic TNRS -i <infile> -o <outfile>
 
 =head1 DESCRIPTION
 

@@ -8,7 +8,7 @@ use base 'Bio::PhyloTastic';
 
 Bio::PhyloTastic::BabelPhysh - Converts between common phylogenetic file formats
 
-=head1 SYNOPSYS
+=head1 SYNOPSIS
 
  phylotastic BabelPhysh -i <infile> -d <informat> -o <outfile> -s <outformat>
 

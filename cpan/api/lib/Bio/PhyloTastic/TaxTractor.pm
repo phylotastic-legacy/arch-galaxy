@@ -7,7 +7,7 @@ use base 'Bio::PhyloTastic';
 
 Bio::PhyloTastic::TaxTractor - Extracts taxa from phylogenetic file formats
 
-=head1 SYNOPSYS
+=head1 SYNOPSIS
 
  phylotastic TaxTractor -i <infile> -d nexml -o <outfile> -search '_' -r ' '
 

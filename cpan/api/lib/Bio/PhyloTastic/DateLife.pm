@@ -11,7 +11,7 @@ use base 'Bio::PhyloTastic';
 
 Bio::PhyloTastic::DateLife - Fetches calibration ages for tree nodes
 
-=head1 SYNOPSYS
+=head1 SYNOPSIS
 
  phylotastic DateLife -i <infile> -o <outfile>
 
