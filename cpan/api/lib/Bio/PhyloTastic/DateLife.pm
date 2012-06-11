@@ -107,7 +107,7 @@ sub _recurse_fetch {
 				my ( $left, $right ) = ( $tips[0], $tips[-1] );
 				
 				# fetch the age
-				my $age = _fetch_age($left,$right) || 0;
+				my $age = _fetch_age($left,$right);
 				$node->set_generic( 'age' => $age );
 				
 				# apply branch lengths to children
@@ -145,7 +145,7 @@ sub _fetch_age {
 		}
 		else {
 			$log->warn("No age for $left <=> $right, got this instead: $age");
-			return undef;
+			return 0;
 		}
 	}
 	
