@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Komodo Project File - DO NOT EDIT -->
 <project id="f2d9a898-e083-bc46-ba74-f9f59d8d1268" kpf_version="5" name="phylotastic.komodoproject">
+<preference-set idref="f2d9a898-e083-bc46-ba74-f9f59d8d1268">
+  <string id="perlDefaultInterpreter"></string>
+  <string id="perlExtraPaths">/Users/rvosa/Dropbox/documents/projects/current/biophylo/src/bio-phylo/lib:/Users/rvosa/Dropbox/documents/projects/current/phylotastic/arch-galaxy/cpan/api/lib</string>
+  <boolean id="perl_debuggerlogenabled">0</boolean>
+  <string id="perl_debuggerlogpath"></string>
+  <boolean id="perl_lintOption_includeCurrentDirForLinter">1</boolean>
+</preference-set>
 </project>
