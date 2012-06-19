@@ -56,7 +56,7 @@ Number of seconds between polling the TNRS service. Optional. Default is 5.
 =cut
 
 # URL for the taxonomic name resolution service
-my $TNRS_URL = 'http://128.196.142.27:3000/submit';
+my $TNRS_URL = 'http://api.phylotastic.org/tnrs/submit';
 
 # defaults
 my $timeout = 60;
@@ -86,13 +86,13 @@ sub _run {
 	my %taxon_for_name = map { $_->get_name => $_ } @{ $taxa->get_entities };
 	
 	# do the request
-	my $result = _fetch_url( $TNRS_URL, 'post', 'query' => join "\n", keys %taxon_for_name ); # this is a redirect
+	my $result = _fetch_url( $TNRS_URL . '?query=' . uri_escape( join "\n", keys %taxon_for_name ) );
 	my $obj = decode_json($result);
 	
 	# start polling
 	while(1) {
 		sleep $wait;
-		my $result = _fetch_url($obj->{'uri'},'get');
+		my $result = _fetch_url($obj->{'uri'});
 		my $obj = decode_json($result);
 		if ( $obj->{'names'} ) {
 			$log->debug(Dumper($obj));
@@ -105,7 +105,7 @@ sub _run {
 
 # fetch data from a URL
 sub _fetch_url {
-	my ( $url, $method, %form ) = @_;
+	my ( $url ) = @_;
 	my $log = __PACKAGE__->_log;
 	$log->info("going to fetch $url");
 	
@@ -115,7 +115,7 @@ sub _fetch_url {
 	$log->info("instantiated user agent with timeout $timeout");
 	
 	# do the request on LWP::UserAgent $ua
-	my $response = $ua->$method($url,\%form);
+	my $response = $ua->get($url);
 	
 	# had a 200 OK
 	if ( $response->is_success ) {
@@ -124,7 +124,7 @@ sub _fetch_url {
 		return $content;
 	}
 	else {
-		$log->error($response->status_line);
+		$log->error($url . ' - ' . $response->status_line);
 		die $response->status_line;
 	}	
 }
