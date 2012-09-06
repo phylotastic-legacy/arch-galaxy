@@ -114,6 +114,7 @@ sub _get_default_args {
 		'verbose=i'      => \$verbose,
 		'help+'          => \$help,
 		'man+'           => \$man,
+		'projects=s'     => [],
 	);
 }
 
@@ -178,6 +179,7 @@ sub run {
 	my $class = shift;
 	my %args = ( $class->_get_default_args, $class->_get_args );
 	push @ARGV, @_;
+	my %method_args = @_;
 	
 	# process arguments
 	GetOptions(%args);
@@ -205,6 +207,7 @@ sub run {
 			'-as_project' => 1,
 		);
 	}
+	push @projects, @{ $method_args{'-projects'} } if $method_args{'-projects'};
 	
 	# run child class
 	$log->debug("going to run $class->_run");
