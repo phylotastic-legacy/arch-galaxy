@@ -3,15 +3,25 @@
 	<description>Translates between phylogenetic file formats</description>
 	<command interpreter="perl">phylotastic.pl BabelPhysh -i $infile -d $deserializer -s $serializer -o $output</command>
 	<inputs>
-		<param name="deserializer" type="select" label="Input data type">
+		<param name="type" type="select" label="Input data type">
+			<option value="dna">DNA</option>
+			<option value="rna">RNA</option>
+			<option value="protein">Protein</option>
+			<option value="standard">Standard categorical</option>
+			<option value="continuous">Continuous values</option>
+			<option value="restriction">Restriction sites</option>
+		</param>
+		<param name="deserializer" type="select" label="Input file format">
 			<option value="nexus">NEXUS</option>
 			<option value="newick">Newick</option>
 			<option value="nexml">NeXML</option>
 			<option value="phyloxml">PhyloXML</option>
 			<option value="adjacency">Adjacency table</option>
 			<option value="taxlist">Taxon table</option>
+			<option value="fasta">FASTA</option>
+			<option value="phylip">PHYLIP</option>
 		</param>
-		<param name="serializer" type="select" label="Output data type">
+		<param name="serializer" type="select" label="Output file format">
 			<option value="nexus">NEXUS</option>
 			<option value="newick">Newick</option>
 			<option value="nexml">NeXML</option>
@@ -20,6 +30,8 @@
 			<option value="adjacency">Adjacency table</option>
 			<option value="taxlist">Taxon table</option>
 			<option value="html">Web page</option>
+			<option value="fasta">FASTA</option>
+			<option value="phylip">PHYLIP</option>
 		</param>                
 		<param format="newick" name="infile" type="data" label="Input file"/>
 	</inputs>
@@ -34,6 +46,8 @@
 				<when input="serializer" value="adjacency" format="adjacency_list" />
 				<when input="serializer" value="taxlist" format="tabular" />
 				<when input="serializer" value="html" format="html" />
+				<when input="serializer" value="fasta" format="fasta" />
+				<when input="serializer" value="phylip" format="phylip" />
 			</change_format>                        
 		</data>
 	</outputs>
