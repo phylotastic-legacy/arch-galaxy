@@ -104,6 +104,7 @@ sub _fac { $fac };
 # returns a hash for Getopt::Long
 my @infile;
 my @deserializer;
+my $type = 'dna'; # default data type
 my ( $outfile, $serializer, $verbose, $help, $man );
 sub _get_default_args {	
 	return (
@@ -111,6 +112,7 @@ sub _get_default_args {
 		'deserializer=s' => \@deserializer,
 		'serializer=s'   => \$serializer,
 		'outfile=s'      => \$outfile,
+		'type=s'         => \$type,
 		'verbose=i'      => \$verbose,
 		'help+'          => \$help,
 		'man+'           => \$man,
@@ -204,6 +206,7 @@ sub run {
 		push @projects, parse(
 			'-format'     => $args{'deserializer=s'}->[$i],
 			'-file'       => $args{'infile=s'}->[$i],
+			'-type'       => $type,
 			'-as_project' => 1,
 		);
 	}
